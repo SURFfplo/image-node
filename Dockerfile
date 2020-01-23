@@ -27,11 +27,14 @@ USER node
 # Bundle app source code
 COPY --chown=node app . 
 
-# for loopback app only not for helloworld server
 #RUN npm run build
+# copy script to configure loopback
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Bind to all network interfaces so that it can be mapped to the host OS
 ENV HOST=0.0.0.0 PORT=3000
 
 EXPOSE ${PORT}
-CMD [ "node", ".", "&"]
+CMD [ "node", "."]
