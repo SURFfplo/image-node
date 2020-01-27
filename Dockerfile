@@ -3,6 +3,9 @@ LABEL image="node"
 LABEL versie="0.1"
 LABEL datum="2020 01 23"
 
+RUN npm install -g @loopback/cli \
+  && npm install -g jsonwebtoken
+
 # setup user
 USER node
 
@@ -11,23 +14,9 @@ RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY --chown=node app/package*.json ./
+# dummy app
+COPY --chown=node app .
 
-USER root
-
-RUN npm install \
-  && npm install -g @loopback/cli \
-  && npm install -g jsonwebtoken
-
-USER node
-
-# Bundle app source code
-COPY --chown=node app . 
-
-#RUN npm run build
 # copy script to configure loopback
 COPY entrypoint.sh /entrypoint.sh
 
